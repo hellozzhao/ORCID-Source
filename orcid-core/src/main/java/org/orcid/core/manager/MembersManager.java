@@ -16,8 +16,8 @@
  */
 package org.orcid.core.manager;
 
+import org.orcid.jaxb.model.member_v2.Member;
 import org.orcid.pojo.ajaxForm.Client;
-import org.orcid.pojo.ajaxForm.Member;
 
 public interface MembersManager {
 

@@ -34,13 +34,13 @@ import org.orcid.core.manager.ThirdPartyLinkManager;
 import org.orcid.jaxb.model.clientgroup.MemberType;
 import org.orcid.jaxb.model.clientgroup.OrcidClient;
 import org.orcid.jaxb.model.clientgroup.OrcidClientGroup;
+import org.orcid.jaxb.model.member_v2.Member;
 import org.orcid.jaxb.model.message.ErrorDesc;
 import org.orcid.persistence.dao.ProfileDao;
 import org.orcid.persistence.jpa.entities.ClientDetailsEntity;
 import org.orcid.persistence.jpa.entities.ClientSecretEntity;
 import org.orcid.persistence.jpa.entities.ProfileEntity;
 import org.orcid.pojo.ajaxForm.Client;
-import org.orcid.pojo.ajaxForm.Member;
 import org.orcid.pojo.ajaxForm.PojoUtil;
 import org.orcid.pojo.ajaxForm.Text;
 import org.orcid.utils.OrcidStringUtils;
@@ -82,6 +82,10 @@ public class MembersManagerImpl implements MembersManager {
     @Override
     public Member createMember(Member newMember) {
         OrcidClientGroup orcidClientGroup = newMember.toOrcidClientGroup();
+        
+        // Transform newMember into ProfileEntity
+        // Store it on DB
+        
         orcidClientGroup = orcidClientGroupManager.createGroup(orcidClientGroup);
         newMember.setGroupOrcid(Text.valueOf(orcidClientGroup.getGroupOrcid()));
         return newMember;

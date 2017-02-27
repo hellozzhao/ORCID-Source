@@ -41,6 +41,7 @@ import org.orcid.jaxb.model.common_v2.SourceClientId;
 import org.orcid.jaxb.model.common_v2.SourceName;
 import org.orcid.jaxb.model.common_v2.SourceOrcid;
 import org.orcid.jaxb.model.groupid_v2.GroupIdRecord;
+import org.orcid.jaxb.model.member_v2.Member;
 import org.orcid.jaxb.model.notification.amended_v2.NotificationAmended;
 import org.orcid.jaxb.model.notification.custom_v2.NotificationCustom;
 import org.orcid.jaxb.model.notification.permission_v2.AuthorizationUrl;
@@ -85,6 +86,7 @@ import org.orcid.persistence.jpa.entities.NotificationWorkEntity;
 import org.orcid.persistence.jpa.entities.OrgAffiliationRelationEntity;
 import org.orcid.persistence.jpa.entities.OtherNameEntity;
 import org.orcid.persistence.jpa.entities.PeerReviewEntity;
+import org.orcid.persistence.jpa.entities.ProfileEntity;
 import org.orcid.persistence.jpa.entities.ProfileFundingEntity;
 import org.orcid.persistence.jpa.entities.ProfileKeywordEntity;
 import org.orcid.persistence.jpa.entities.PublicationDateEntity;
@@ -332,6 +334,12 @@ public class MapperFacadeFactory implements FactoryBean<MapperFacade> {
         //TODO: add relationship to database schema for people.
         externalIdentifierClassMap.register();
         return mapperFactory.getMapperFacade();
+    }
+    
+    public MapperFacade getMemberMapperFacade() {
+        MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+        ClassMapBuilder<Member, ProfileEntity> memberClassMap = mapperFactory.classMap(Member.class, ProfileEntity.class);        
+        
     }
     
     public MapperFacade getResearcherUrlMapperFacade() {

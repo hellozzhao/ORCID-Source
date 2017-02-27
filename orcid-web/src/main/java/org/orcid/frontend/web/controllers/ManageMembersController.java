@@ -69,8 +69,7 @@ public class ManageMembersController extends BaseController {
 
     @RequestMapping
     public ModelAndView getManageMembersPage() {
-        ModelAndView mav = new ModelAndView("/admin/manage_members");
-        return mav;
+        return new ModelAndView("/admin/manage_members");        
     }
 
     /**
@@ -145,7 +144,8 @@ public class ManageMembersController extends BaseController {
         copyErrors(member.getSalesforceId(), member);
 
         if (member.getErrors().isEmpty()) {
-            member = membersManager.createMember(member);
+            org.orcid.jaxb.model.member_v2.Member newMember = membersManager.createMember(member.toMember());
+            member = Member.valueOf(newMember);
         }
 
         return member;

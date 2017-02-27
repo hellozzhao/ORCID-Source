@@ -20,8 +20,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.orcid.jaxb.model.clientgroup.MemberType;
-import org.orcid.jaxb.model.clientgroup.OrcidClientGroup;
+import org.orcid.jaxb.model.common_v2.OrcidIdentifier;
+import org.orcid.jaxb.model.member_v2.MemberType;
 import org.orcid.persistence.jpa.entities.ProfileEntity;
 
 public class Member implements ErrorsInterface, Serializable {
@@ -59,18 +59,39 @@ public class Member implements ErrorsInterface, Serializable {
     	return group;
     }
     
-    public OrcidClientGroup toOrcidClientGroup() {
-        OrcidClientGroup orcidClientGroup = new OrcidClientGroup();
-        orcidClientGroup.setGroupOrcid(groupOrcid == null? "" : groupOrcid.getValue());
-        orcidClientGroup.setType(MemberType.fromValue(getType().getValue()));
-        orcidClientGroup.setGroupName(getGroupName().getValue());
-        orcidClientGroup.setEmail(getEmail().getValue());
-        if(getSalesforceId() == null)
-            setSalesforceId(Text.valueOf(""));
-        orcidClientGroup.setSalesforceId(getSalesforceId().getValue());
-        return orcidClientGroup;
+    public org.orcid.jaxb.model.member_v2.Member toMember() {
+        org.orcid.jaxb.model.member_v2.Member member = new org.orcid.jaxb.model.member_v2.Member();
+        if(!PojoUtil.isEmpty(this.getEmail())) {
+            member.setEmail(this.getEmail().getValue());
+        }
+        
+        if(!PojoUtil.isEmpty(this.getGroupName())) {
+            member.setName(this.getGroupName().getValue());    
+        }
+        
+        if(!PojoUtil.isEmpty(this.getGroupOrcid())) {
+            member.setOrcidIdentifier(new OrcidIdentifier(this.getGroupOrcid().getValue()));
+        }
+        
+        if(!PojoUtil.isEmpty(this.getSalesforceId())) {
+            member.setSalesforceId(this.getSalesforceId().getValue());            
+        }
+        //Type must not be null
+        member.setType(MemberType.fromValue(this.getType().getValue()));
+        return member;
     }
-
+    
+    public static Member valueOf(org.orcid.jaxb.model.member_v2.Member member) {
+        Member result = new Member();
+        result.setEmail(Text.valueOf(member.getEmail()));
+        result.setGroupName(Text.valueOf(member.getName()));
+        result.setGroupOrcid(Text.valueOf(member.getOrcidIdentifier().getPath()));
+        result.setType(Text.valueOf(member.getType().value()));
+        if(member.getSalesforceId() != null)
+            result.setSalesforceId(Text.valueOf(member.getSalesforceId()));            
+        return result;
+    }
+    
     public Text getType() {
         return type;
     }
