@@ -735,6 +735,8 @@ public class MapperFacadeFactory implements FactoryBean<MapperFacade> {
             public void mapBtoA(ClientDetailsEntity b, Client a, MappingContext context) {
                 if(b.getClientSecrets() != null) {
                     for(ClientSecretEntity entity : b.getClientSecrets()) {
+                        System.out.println("Secret: " + entity.getClientSecret());
+                        System.out.println("Is Primary? " + entity.isPrimary());
                         if(entity.isPrimary()) {
                             a.setDecryptedSecret(encryptionManager.decryptForInternalUse(entity.getClientSecret()));
                         }

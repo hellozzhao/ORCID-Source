@@ -45,6 +45,8 @@ public class ClientManagerReadOnlyImpl implements ClientManagerReadOnly {
     public Client get(String clientId) {
         Date lastModified = clientDetailsDao.getLastModified(clientId);
         ClientDetailsEntity entity = clientDetailsDao.findByClientId(clientId, lastModified.getTime());
+        System.out.println("Size: " + entity.getClientSecrets().size());
+        entity.getClientSecrets().forEach(s -> {System.out.println("Secret: " + s.getClientSecret());});
         return jpaJaxbClientAdapter.toClient(entity);
     }
 
